@@ -1,0 +1,92 @@
+@host = 11.1.1.1
+@port = 32056
+
+// health check
+
+GET http://{{host}}:{{port}}/ping
+
+###
+# create an intimate bar
+POST http://{{host}}:{{port}}/create/?scene=intimate_bar
+content-type: application/json
+
+{
+  "room_state": {
+    "actors": [
+      {
+        "id": 1,
+        "prop": {
+          "type": "player",
+          "name": "Paul",
+          "role": "",
+          "work": "",
+          "interest": "",
+          "age": "",
+          "gender": "",
+          "nature": "",
+          "talking_style": "humorous",
+          "current_state": "poor",
+          "relations": []
+        }
+      },
+      {
+        "id": 2,
+        "prop": {
+          "type": "npc",
+          "name": "Sandy",
+          "gender": "female"
+        }
+      }
+    ]
+  },
+  "gpt3_config": {
+  },
+  "room_config": {
+    "rounds": 3
+  }
+}
+
+###
+
+# gpt3 take action
+POST http://{{host}}:{{port}}/act/
+content-type: application/json
+
+###
+
+# user action
+POST http://{{host}}:{{port}}/act/
+content-type: application/json
+
+{
+  "src": 1,
+  "target": 2,
+  "text": "Did you hear about the crime happening in the town?"
+}
+
+###
+
+# user action
+POST http://{{host}}:{{port}}/act/
+content-type: application/json
+
+{
+  "src": 1,
+  "target": 2,
+  "text": "Do you like beer or whisky?"
+}
+
+###
+
+GET http://{{host}}:{{port}}/simulation/?n_max_steps=15
+
+###
+
+GET http://{{host}}:{{port}}/query/
+
+###
+
+# reset
+POST http://{{host}}:{{port}}/reset/
+content-type: application/json
+
